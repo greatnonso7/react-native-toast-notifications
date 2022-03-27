@@ -45,6 +45,7 @@ class ToastContainer extends Component<Props, State> {
     };
 
     requestAnimationFrame(() => {
+      this.setState({ toasts: this.state.toasts.filter((t) => t.id !== id) });
       this.setState({
         toasts: [
           {
@@ -107,17 +108,19 @@ class ToastContainer extends Component<Props, State> {
       justifyContent: "flex-end",
       flexDirection: "column",
     };
+    const newToast = toasts[0];
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "position" : undefined}
         style={[styles.container, style]}
         pointerEvents="box-none"
       >
-        {toasts
-          .filter((t) => !t.placement || t.placement === "bottom")
+        {newToast && <Toast {...newToast} />}
+        {/* {toasts
+          .filter((t) => !t.placement || t.placement === "bottom" && t.open)
           .map((toast) => (
             <Toast key={toast.id} {...toast} />
-          ))}
+          )).slice(0, 1)} */}
       </KeyboardAvoidingView>
     );
   }
